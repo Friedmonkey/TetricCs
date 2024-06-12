@@ -62,6 +62,8 @@ public class Game
     public bool paused;
     public int score;
     public Music music;
+
+    //we need to keep a refference to this so the GC doest throw it away
     public byte[] _musicBytes;
 
     private Grid grid;
