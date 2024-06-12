@@ -234,8 +234,8 @@ public class Game
         {
             return;
         }
-        bool success = SimpleRotateLeft(currentBlock);
-        //bool success = SRSRotateLeft(currentBlock);
+        //bool success = SimpleRotateLeft(currentBlock);
+        bool success = SRSRotateLeft(currentBlock);
         if (success)
         {
             Raylib.PlaySound(rotateSound);
@@ -253,8 +253,8 @@ public class Game
         {
             return;
         }
-        bool success = SimpleRotateRight(currentBlock);
-        //bool success = SRSRotateRight(currentBlock);
+        //bool success = SimpleRotateRight(currentBlock);
+        bool success = SRSRotateRight(currentBlock);
         if (success)
         {
             Raylib.PlaySound(rotateSound);
@@ -301,6 +301,7 @@ public class Game
         }
 
         var kick = rot(start, end);
+        if (kick == 11) return true;
         var kickdata = Block.wallkick[kick];
 
         int orgRow = Block.rowOffset;
@@ -347,6 +348,7 @@ public class Game
         }
 
         var kick = rot(start, end);
+        if (kick == 11) return true;
         var kickdata = Block.wallkick[kick];
 
         int orgRow = Block.rowOffset;
@@ -389,7 +391,7 @@ public class Game
 
     private bool IsBlockOutside(Block Block)
     {
-        Position[] tiles = currentBlock.GetCellPositions();
+        Position[] tiles = Block.GetCellPositions();
         foreach (Position item in tiles)
         {
             if (grid.IsCellOutside(item.row, item.column))
@@ -401,7 +403,7 @@ public class Game
     }
     private bool BlockFits(Block Block)
     {
-        Position[] tiles = currentBlock.GetCellPositions();
+        Position[] tiles = Block.GetCellPositions();
         foreach (Position item in tiles)
         {
             if (!grid.IsCellEmpty(item.row, item.column))
@@ -486,7 +488,6 @@ public class Game
 
     void DropShadow()
     {
-        return;
         //set the shadow to the exact position as the block
         currentBlockShadow.rowOffset = currentBlock.rowOffset;
         currentBlockShadow.colummnOffset = currentBlock.colummnOffset;

@@ -12,15 +12,16 @@ public class Block
 {
     public Block(Block source)
     {
-        rotationState = source.rotationState;
-        colors = Def.GetCellColors();
-
+        id = source.id;
         cells = new(source.cells);
         wallkick = new(source.wallkick);
 
-        id = source.id;
+        rotationState = source.rotationState;
+
         colummnOffset = source.colummnOffset;
         rowOffset = source.rowOffset;
+
+        colors = Def.GetCellColors();
     }
     public Block() 
     {
@@ -31,6 +32,15 @@ public class Block
         colummnOffset = 0;
         rowOffset = 0;
     }
+
+    public int id;
+    public Dictionary<int, Position[]> cells = new Dictionary<int, Position[]>();
+    public Dictionary<int, Position[]> wallkick = new Dictionary<int, Position[]>();
+    public int rotationState;
+
+    public int rowOffset;
+    public int colummnOffset;
+    private Color[] colors;
     public void Draw(int offsetX, int offsetY)
     {
         Position[] tiles = GetCellPositions();
@@ -54,13 +64,9 @@ public class Block
         Position[] tiles = GetCellPositions();
         foreach (Position item in tiles)
         {
-            if (item.row < Def.BufferRows)
-            {
-                continue;
-            }
             Raylib.DrawRectangle(
                 item.column * Def.CellSize + Def.GapSize + Def.OffSet + offsetX,
-                (item.row - Def.BufferRows) * Def.CellSize + Def.GapSize + Def.OffSet + offsetY,
+                item.row * Def.CellSize + Def.GapSize + Def.OffSet + offsetY,
                 Def.CellSize - Def.GapSize,
                 Def.CellSize - Def.GapSize,
                 colors[id]
@@ -86,7 +92,7 @@ public class Block
     public void RotateRight()
     {
         rotationState++;
-        if (rotationState == (int)cells.Count()-1)
+        if (rotationState == (int)cells.Count())
         {
             rotationState = 0;
         }
@@ -96,15 +102,7 @@ public class Block
         rotationState--;
         if (rotationState == -1)
         {
-            rotationState = (int)cells.Count() - 2;
+            rotationState = (int)cells.Count() - 1;
         }
     }  
-    public int id;
-    public Dictionary<int, Position[]> cells = new Dictionary<int, Position[]>();
-    public Dictionary<int, Position[]> wallkick = new Dictionary<int, Position[]>();
-    public int rotationState;
-
-    public int rowOffset;
-    public int colummnOffset;
-	private Color[] colors;
 };
